@@ -1,0 +1,82 @@
+[CMD]
+
+# sys계정으로 오라클 접속
+sqlplus system/password
+
+# 사용자 계정 생성
+create user springmvcboard identified by springmvcboard;
+
+# 사용자 권한 부여
+grant connect, resource, dba to springmvcboard;
+
+
+[DBeaver]
+
+# 시퀀스 생성
+CREATE SEQUENCE seq_board INCREMENT BY 1;
+
+# 테이블 생성
+CREATE TABLE board (
+	bno NUMBER(10,0),
+	title varchar(2000) NOT NULL,
+	content varchar2(4000) NOT NULL,
+	writer varchar2(200) NOT NULL,
+	regdate DATE DEFAULT sysdate,
+	updatedate DATE DEFAULT sysdate
+);
+
+# 컬럼 커맨트 부여
+COMMENT ON COLUMN board.bno IS '번호';
+COMMENT ON COLUMN board.title IS '제목';
+COMMENT ON COLUMN board.content IS '내용';
+COMMENT ON COLUMN board.writer IS '작성자';
+COMMENT ON COLUMN board.regdate IS '등록일시';
+COMMENT ON COLUMN board.updatedate IS '수정일시';
+
+# PK 설정
+ALTER TABLE board ADD CONSTRAINTS pk_board PRIMARY key(bno);
+
+# 더미 데이터 생성
+INSERT INTO board(bno,title,content,WRITER) 
+VALUES (seq_board.nextval,'제목1','내용1','작성자1');
+
+INSERT INTO board(bno,title,content,WRITER) 
+VALUES (seq_board.nextval,'제목2','내용2','작성자2');
+
+INSERT INTO board(bno,title,content,WRITER) 
+VALUES (seq_board.nextval,'제목3','내용3','작성자3');
+
+# 댓글 테이블 생성
+CREATE TABLE reply(
+	rno number(10,0),
+	bno number(10,0) NOT NULL,
+	reply varchar2(2000) NOT NULL,
+	replyer varchar2(200) NOT NULL,
+	replydate DATE DEFAULT sysdate,
+	updatedate DATE DEFAULT sysdate
+);
+
+# 시퀀스 생성
+CREATE SEQUENCE seq_reply INCREMENT BY 1;
+
+# 제약조건 설정
+ALTER TABLE reply ADD CONSTRAINT pk_reply PRIMARY KEY (rno);
+ALTER TABLE reply ADD CONSTRAINT fk_reply_board FOREIGN KEY (bno) REFERENCES board(bno);
+
+# 코멘트 설정
+COMMENT ON COLUMN reply.rno IS '댓글번호';
+COMMENT ON COLUMN reply.bno IS '게시글번호(FK)';
+COMMENT ON COLUMN reply.reply IS '댓글내용';
+COMMENT ON COLUMN reply.replyer IS '댓글작성자';
+COMMENT ON COLUMN reply.replydate IS '댓글등록일시';
+COMMENT ON COLUMN reply.updatedate IS '댓글수정일시';
+
+# 더미데이터 삽입
+INSERT INTO reply (rno,bno,reply,replyer)
+VALUES (seq_reply.nextval,40,'댓글5','댓글 작성자5');
+
+# 데이터 확인
+SELECT * FROM reply;
+
+// 인덱스 생성
+CREATE INDEX idx_reply ON reply (bno DESC, rno asc);
