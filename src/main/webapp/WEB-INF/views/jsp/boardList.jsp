@@ -42,6 +42,8 @@
 							<td>
 								<a class='selectLink' bno='${boardVO.bno}' pageNum='${pageCalc.criteria.pageNum}'>
 										<c:out value="${boardVO.title}" />
+										&nbsp;
+										(${boardVO.replycnt})
 								</a>
 							</td>
 							<td><c:out value="${boardVO.writer}" /></td>

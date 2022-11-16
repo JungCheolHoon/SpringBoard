@@ -32,10 +32,10 @@
 	<select id="boardVOList"
 		resultType="kr.kwangan2.springmvcboard.domain.BoardVO">
   		<![CDATA[
-  		select bno, title, writer, regdate, updatedate
+  		select bno, title, writer, regdate, updatedate, replycnt
   		 from (
   		 	select /*+INDEX_DESC(board pk_board)*/
-  		 		rownum rn, bno, title, writer, regdate, updatedate
+  		 		rownum rn, bno, title, writer, regdate, updatedate, replycnt
   		 	from 
   		 		board
   		 	where 
@@ -90,6 +90,13 @@
 		select * from board where bno=#{bno}
 		]]>
 	</select>
+	
+	<select id="selectLastBno"
+		resultType="int">
+		<![CDATA[
+		select * from (SELECT bno FROM board order by bno DESC) where rownum <=1
+		]]>
+	</select>
 
 	<delete id="deleteBoardVO">
 		<![CDATA[
@@ -107,6 +114,17 @@
 				updateDate= sysdate 
 			where 
 				bno=#{bno}
+		]]>
+	</update>
+	
+	<update id="updateReplycnt">
+		<![CDATA[
+			update 
+				board 
+			set 
+				replycnt = replycnt + #{amount}
+			where
+				bno = #{bno}
 		]]>
 	</update>
 

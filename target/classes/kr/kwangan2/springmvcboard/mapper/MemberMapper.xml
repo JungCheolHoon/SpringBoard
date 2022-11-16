@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.kwangan2.springmvcboard.mapper.MemberMapper">
+
+	<resultMap id="memerMap" type="kr.kwangan2.springmvcboard.domain.MemberVO">
+		<id property="userid" column="userid" />
+		<result property="userpw" column="userpw" />
+		<result property="userName" column="userName" />
+		<result property="enabled" column="enabled" />
+		<result property="regDate" column="regDate" />
+		<result property="updateDate" column="updateDate" />
+		<collection property="authList" resultMap="authMap"></collection>
+	</resultMap>
+	
+	<resultMap id="authMap" type="kr.kwangan2.springmvcboard.domain.AuthVO">
+		<result property="userid" column="userid" />
+		<result property="auth" column="auth" />
+	</resultMap>
+
+	<select id="read"
+		resultMap="memerMap">
+		<![CDATA[
+		select mem.userid, userpw, username, enabled, regdate, updatedate, auth
+		from 
+			tbl_member mem 
+		left outer join 
+			tbl_member_auth auth
+		on 
+			mem.userid = auth.userid
+		where 
+			mem.userid=#{userid}
+		]]>
+	</select>
+	
+</mapper>

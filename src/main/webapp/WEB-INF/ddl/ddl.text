@@ -80,3 +80,9 @@ SELECT * FROM reply;
 
 // 인덱스 생성
 CREATE INDEX idx_reply ON reply (bno DESC, rno asc);
+
+// 게시물 댓글 수 컬럼 추가
+alter TABLE board ADD (replycnt NUMBER DEFAULT 0);
+
+// 게시물 댓글 수에 맞게 보드테이블(replycnt)에 추가
+UPDATE board SET replycnt = (SELECT count(rno) FROM reply WHERE reply.bno=board.bno);

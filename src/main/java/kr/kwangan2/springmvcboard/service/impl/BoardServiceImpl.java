@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import kr.kwangan2.springmvcboard.domain.BoardAttachVO;
 import kr.kwangan2.springmvcboard.domain.BoardVO;
 import kr.kwangan2.springmvcboard.domain.Criteria;
 
@@ -47,4 +48,18 @@ public class BoardServiceImpl extends AbstractBoardService {
 	public int boardVOTotal(Criteria criteria) {
 		return 0;
 	}
+
+	@Override
+	public int updateReplycnt(long bno, long amount) {
+		return 0;
+	}
+	
+	public List<BoardAttachVO> selectAttachList(long bno){
+		return null;
+	}
+	
+	public int selectLastBno() {
+		return 0;
+	}
+
 }

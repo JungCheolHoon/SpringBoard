@@ -22,6 +22,7 @@
    </beans:bean>
    
    <beans:bean id="swagger2Config" class="kr.kwangan2.springmvcboard.config.SwaggerConfig"></beans:bean>
-   
+   <beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+	</beans:bean>
    <context:component-scan base-package="kr.kwangan2.springmvcboard" />
 </beans:beans>
